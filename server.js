@@ -49,7 +49,22 @@ const shoes = [
 ];
 
 app.get("/shoes", (req, res) => {
-    
+  let shoesFiltered = shoes;
+  const minPrice = parseInt(req.query["min-price"]);
+  const maxPrice = parseInt(req.query["max-price"]);
+  const type = req.query.type;
+
+  if (!isNaN(minPrice)) {
+    shoesFiltered = shoes.filter(shoe => shoe.price >= minPrice);
+  }
+  if (!isNaN(maxPrice)) {
+    shoesFiltered = shoes.filter(shoe => shoe.price <= maxPrice);
+  }
+  if (type) {
+    shoesFiltered = shoes.filter(shoe => shoe.type === type);
+  }
+
+  return res.json(shoesFiltered);
 });
 
 // this goes at the very end
